@@ -4,8 +4,8 @@ async function payWithNequi(){
 
   const payload = {
     amount: total.toFixed(2),          // usa tu variable total
-    email : prompt("Correo para la factura"),
-    phone : prompt("Celular asociado a Nequi")
+    email : prompt("jualxlatan2@gmail.com"),
+    phone : prompt("3143557167")
   };
 
   const res  = await fetch("https://TU_BACKEND.onrender.com/api/pay/nequi",{
