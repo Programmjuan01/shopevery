@@ -96,3 +96,28 @@ body { background:#f5f7fa; color:#111; min-height:100vh; display:flex; flex-dire
   font-weight:600;
   cursor:pointer;
 }
+/* Botón secundario gris */
+button.secondary{
+  background:#777;          /* gris medio */
+  color:#fff;
+}
+
+.cart-item{ position:relative; }       /* contenedor del producto */
+
+.remove{
+  position:absolute;
+  top:8px; right:8px;
+  background:#d41528;
+  border:none; color:#fff;
+  border-radius:50%;
+  width:28px; height:28px;
+  cursor:pointer;
+  font-weight:600;
+  line-height:28px;
+}
+/* style.css – deja el botón‐enlace igual que antes */
+.cart{
+  display:inline-flex;                 /* mantiene el padding */
+  align-items:center;
+  text-decoration:none;                /* quita subrayado */
+}
