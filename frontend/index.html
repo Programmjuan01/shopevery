@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Shopevery – Catálogo</title>
+
+  <!-- Google Font + Bootstrap + Iconos -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Tus estilos (sobrescriben Bootstrap cuando sea necesario) -->
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* retoques rápidos sin tocar tu CSS externo */
+    body            { font-family: "Inter", sans-serif; background:#f8f9fa; }
+    header.topbar   { backdrop-filter: blur(6px); }
+    #productGrid    { gap: 1.5rem; }
+    .card-product   { transition: transform .15s ease-in-out; }
+    .card-product:hover { transform: translateY(-4px); }
+    .uploader form  { max-width: 420px; margin: auto; }
+  </style>
+</head>
+
+<body>
+  <!-- ---------- TOPBAR ---------- -->
+  <header class="topbar shadow-sm sticky-top">
+    <nav class="navbar navbar-expand-lg bg-white">
+      <div class="container-fluid">
+        <a class="navbar-brand fw-semibold fs-4" href="#">Shopevery</a>
+
+        <!-- Carrito -->
+        <a id="cartBtn" class="btn position-relative me-3" href="./cart.html" aria-label="Ver carrito">
+          <i class="bi bi-cart3 fs-4"></i>
+          <span id="cartCount"
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
+        </a>
+
+        <!-- Usuario -->
+        <div id="userBox" class="d-flex align-items-center gap-2">
+          <span   id="userName"  class="fw-semibold" hidden></span>
+          
+          <a id="profileLink"
+             href="/profile.html"
+             class="btn btn-outline-primary btn-sm d-none">
+             Perfil
+          </a>
+        
+          <button id="logoutBtn"
+                  class="btn btn-outline-secondary btn-sm d-none">
+                  Salir
+          </button>
+        
+          <button id="loginBtn"
+                  class="btn btn-primary btn-sm">
+                  Iniciar sesión
+          </button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ---------- CONTENIDO ---------- -->
+  <main class="container py-4">
+
+    <!-- LISTA DE PRODUCTOS -->
+    <section id="productGrid"
+             class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 gy-4">
+      <!-- las tarjetas se generan por JS -->
+    </section>
+
+    <!-- FORMULARIO PARA SUBIR ANUNCIO -->
+    <section class="uploader my-5">
+      <h2 class="h4 text-center mb-3">Publica tu anuncio</h2>
+
+      <form id="addProductForm" class="needs-validation" novalidate>
+        <div class="mb-3">
+          <label class="form-label">Nombre del producto</label>
+          <input required name="title" class="form-control" placeholder="Ej. Bicicleta MTB">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Precio (COP)</label>
+          <input required name="price" type="number" step="0.01"
+                 class="form-control" placeholder="250000">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">URL de la imagen</label>
+          <input required name="image" class="form-control" placeholder="https://…">
+        </div>
+
+        <div class="d-grid">
+          <button type="submit" class="btn btn-success">
+            <i class="bi bi-cloud-upload me-1"></i> Publicar
+          </button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <!-- ---------- MODAL LOGIN / REGISTRO ---------- -->
+  <div id="authModal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="authForm" class="modal-body p-4">
+          <h2 id="authTitle" class="h5 mb-3">Iniciar sesión</h2>
+
+          <div class="mb-3 regField">
+            <label class="form-label">Nombre</label>
+            <input name="name" required class="form-control regField" placeholder="Tu nombre">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Correo</label>
+            <input name="email" type="email" required class="form-control" placeholder="correo@ejemplo.com">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Contraseña</label>
+            <input name="password" type="password" required class="form-control" placeholder="••••••••">
+          </div>
+
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary">Enviar</button>
+            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+          </div>
+
+          <p id="toggleAuth" class="small text-center mt-3 text-decoration-underline cursor-pointer">
+            ¿No tienes cuenta? Regístrate
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ---------- SCRIPTS ---------- -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Tu lógica después  👉 ya puede usar bootstrap.* -->
+<script type="module" src="script.js"></script>
+</body>
+</html>

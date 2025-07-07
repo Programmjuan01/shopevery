@@ -1,0 +1,38 @@
+<!-- cart.html -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Carrito – Shopevery</title>
+
+    <!-- Estilos globales -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header class="topbar">
+      <!-- Volver al catálogo -->
+      <a class="logo" href="index.html">← Catálogo</a>
+      <h2>Tu carrito</h2>
+    </header>
+
+    <!-- Lista dinámica de productos -->
+    <main id="cartContainer" class="cart-page"></main>
+
+    <!-- Resumen + acciones -->
+    <section class="checkout-box">
+  <p>Total: <strong id="cartTotal">$0</strong></p>
+
+  <div class="actions">
+    <button id="clearBtn" class="secondary">Vaciar carrito 🗑</button>
+    <button id="payBtn">Pagar con PSE 🏦</button>
+  </div>
+</section>
+
+    <!-- ePayco (o tu proveedor de pagos) -->
+    <script src="https://checkout.epayco.co/checkout.js"></script>
+
+    <!-- Lógica del carrito y pago -->
+    <script type="module" src="cart.js"></script>
+  </body>
+</html>
