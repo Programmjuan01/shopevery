@@ -16,7 +16,7 @@ const nameInput  = document.querySelector('input[name="name"]');
 const productGrid   = document.getElementById('productGrid');
 const addProductFrm = document.getElementById('addProductForm');
 const profileLink = document.getElementById('profileLink');
-const API = '/api';
+const API = 'https://shopevery-api.onrender.com/api'; // ejemplo
 
 // ---------- Estado ----------
 let isRegisterForm = false;             // ✅ declara explícitamente

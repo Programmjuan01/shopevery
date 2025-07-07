@@ -10,7 +10,7 @@ from pymongo.errors import PyMongoError
 from auth import auth_bp                    # Blueprint de login/registro
 
 # -------- Configuración -------------------------------------------------
-app = Flask(__name__, static_folder=".", static_url_path="")
+app = Flask(__name__)  # sin static_folder
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET", "cambia-esto")
 app.config["MONGODB_URI"]    = os.getenv("MONGODB_URI")
 
@@ -23,9 +23,7 @@ db = client["shopeverydb"]
 products_col = db["products"]
 
 # -------- Frontend estático ---------------------------------------------
-@app.get("/")
-def root():
-    return send_from_directory(app.static_folder, "index.html")
+
 
 # -------- Endpoints de productos ----------------------------------------
 
