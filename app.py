@@ -10,7 +10,7 @@ from pymongo.errors import PyMongoError
 from auth import auth_bp                    # Blueprint de login/registro
 
 # -------- Configuración -------------------------------------------------
-app = Flask(__name__, static_folder="frontend", static_url_path="")
+app = Flask(__name__, static_folder=".", static_url_path="")
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET", "cambia-esto")
 app.config["MONGODB_URI"]    = os.getenv("MONGODB_URI")
 
