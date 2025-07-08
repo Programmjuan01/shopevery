@@ -86,9 +86,11 @@ authForm.addEventListener('submit', async e => {
       modal.hide();
     }
     authForm.reset();
-  } catch (err) {
-    alert(err.msg || 'Error inesperado');
+  }  catch (err) {
+  console.error('Error al publicar producto:', err);
+  alert(err.msg || 'No se pudo publicar');
   }
+
 });
 
 // ---------- Productos ----------------------------------------------
@@ -139,13 +141,14 @@ addProductFrm.addEventListener('submit', async e => {
   const data = Object.fromEntries(new FormData(addProductFrm));
   try {
     const r = await fetch(`${API}/products`, {
-      method : 'POST',
-      headers: {
-        'Content-Type' : 'application/json',
-        'Authorization': 'Bearer ' + getToken()
-      },
-      body   : JSON.stringify(data)
-    });
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + getToken()
+    },
+    credentials: 'include'
+  });
+
     if (!r.ok) throw await r.json();
     addProductFrm.reset();
     await fetchProducts();

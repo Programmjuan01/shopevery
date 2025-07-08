@@ -1,6 +1,8 @@
 import os, uuid, datetime, requests
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
+
+
 from flask import Flask, jsonify, request, send_from_directory, current_app
 from flask_jwt_extended import (
     JWTManager, jwt_required, get_jwt_identity, create_access_token
@@ -10,11 +12,23 @@ from pymongo.errors import PyMongoError
 from auth import auth_bp                    # Blueprint de login/registro
 
 # -------- Configuración -------------------------------------------------
-app = Flask(__name__)  # sin static_folder
+app = Flask(__name__, static_folder="frontend", static_url_path="")
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET", "cambia-esto")
 app.config["MONGODB_URI"]    = os.getenv("MONGODB_URI")
 
-CORS(app, supports_credentials=True)
+# ✅ CORS correctamente configurado DESPUÉS de crear la app
+
+CORS(app, supports_credentials=True, resources={
+    r"/api/*": {
+        "origins": [
+            "http://localhost:5000",
+            "http://127.0.0.1:5000",
+            "http://192.168.225.3:5000",
+            "http://192.168.1.92:5000",
+            "https://programmjuan01.github.io"
+        ]
+    }
+})
 jwt = JWTManager(app)
 
 # -------- Base de datos (solo colección de productos aquí) --------------
@@ -23,7 +37,9 @@ db = client["shopeverydb"]
 products_col = db["products"]
 
 # -------- Frontend estático ---------------------------------------------
-
+@app.get("/")
+def root():
+    return send_from_directory(app.static_folder, "index.html")
 
 # -------- Endpoints de productos ----------------------------------------
 
@@ -55,18 +71,6 @@ def list_products():
     except Exception as e:
         app.logger.exception(e)
         return jsonify(error="internal", detail=str(e)), 500
-
-# @app.get("/api/products")
-# def list_products():
-#     prods = products_col.find()
-#     return jsonify([
-#         {
-#             "id":    p["_id"],
-#             "title": p["title"],
-#             "price": p["price"],
-#             "image": p["image"]
-#         } for p in prods
-#     ])
 
 @app.post("/api/products")
 @jwt_required()
@@ -121,6 +125,23 @@ def pay_nequi():
 # -------- Registrar Blueprint de auth  (SOLO una vez) -------------------
 app.register_blueprint(auth_bp)
 
+# -------- Cart -----------------------------------------
+
+@app.get('/api/cart')
+@jwt_required()
+def get_cart():
+    uid = get_jwt_identity()
+    user = db.users.find_one({'_id': uid})
+    return jsonify(user.get('cart', []))
+
+@app.post('/api/cart')
+@jwt_required()
+def save_cart():
+    uid = get_jwt_identity()
+    cart = request.json.get('cart', [])
+    db.users.update_one({'_id': uid}, {'$set': {'cart': cart}})
+    return jsonify({"msg": "Carrito actualizado"})
+
 # --- USERS ---------------------------------------------------------
 @app.get("/api/users/me")
 @jwt_required()
@@ -171,4 +192,3 @@ def send_msg():
 # -------- Arranque ------------------------------------------------------
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
-

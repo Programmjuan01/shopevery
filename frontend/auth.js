@@ -2,12 +2,14 @@
 const API       = '/api';                 // mismo host => sin CORS
 const TOKEN_KEY = 'shopevery-token';
 const UID_KEY   = 'shopevery-uid';
+const NAME_KEY  = 'user-name';            // para guardar el nombre
 
 // -------- Helpers Token --------------------------------------------
-export const getToken = () => localStorage.getItem(TOKEN_KEY);
+export const getToken = () => sessionStorage.getItem(TOKEN_KEY);
 export const isLogged = () => !!getToken();
-export const logout   = () => localStorage.removeItem(TOKEN_KEY);
-export const getUid   = () => localStorage.getItem(UID_KEY);
+export const logout   = () => sessionStorage.clear();
+export const getUid   = () => sessionStorage.getItem(UID_KEY);
+export const getName  = () => sessionStorage.getItem(NAME_KEY);
 
 // -------- Util para parsear siempre JSON ---------------------------
 async function parseJSON(r) {
@@ -24,20 +26,23 @@ export async function register(name, email, password) {
     body   : JSON.stringify({ name, email, password })
   });
   if (!r.ok) throw await parseJSON(r);
-  /* 200 → no devuelve nada más que {msg:"Usuario registrado"} */
+  // 200 → { msg: "Usuario registrado" }
 }
 
-// ------------- login actualizado ---------------------------------
+// ------------- Login actualizado -----------------------------------
 export async function login(email, password) {
-  const r = await fetch('/api/login', {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
+  const r = await fetch(`${API}/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password })
   });
   const data = await r.json();
   if (!r.ok) throw data;
 
-  localStorage.setItem(TOKEN_KEY, data.token);
-  localStorage.setItem(UID_KEY,   data.uid);
-  return data.name;                              // devolvemos name
+  // Guardar en sessionStorage
+  sessionStorage.setItem(TOKEN_KEY, data.token);
+  sessionStorage.setItem(UID_KEY,   data.uid);
+  sessionStorage.setItem(NAME_KEY,  data.name);
+
+  return data.name;
 }
